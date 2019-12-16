@@ -1,0 +1,9 @@
+float64[] obs_x
+float64[] obs_y
+float64[] border_x
+float64[] border_y
+float64[] dest_x
+float64[] dest_y
+float64[] rob_x
+float64[] rob_y
+bool save

@@ -1,0 +1,20 @@
+<launch>
+   <node pkg="gmapping" type="slam_gmapping" name="gmapping_node" output="screen" >
+    	<param name="scan" value="/scan" />
+    	<param name="odom_frame" value="/odom" />
+    	<param name="base_frame" value="/base_link" />
+
+		<param name="maxUrange" value="4.0" />
+		<param name="maxRange" value="5.0" />
+		<param name="minimumScore" value="50" />
+
+		<param name="linearUpdate" value="1.0"/>
+    	<param name="angularUpdate" value="0.5"/>
+    	<param name="temporalUpdate" value="2.0"/>
+
+		<param name="xmin" value="-20"/>
+		<param name="xmax" value="20"/>
+		<param name="ymin" value="-20"/>
+		<param name="ymax" value="20"/>	
+	</node>
+</launch>

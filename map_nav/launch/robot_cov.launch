@@ -1,0 +1,6 @@
+<launch>
+	<node pkg="map_nav" type="potential_field.py" name="move_rob"  output="screen">
+    </node>
+	<node pkg="map_nav" type="cover_map.py" name="map_mana"  output="screen">
+    </node>
+</launch>
