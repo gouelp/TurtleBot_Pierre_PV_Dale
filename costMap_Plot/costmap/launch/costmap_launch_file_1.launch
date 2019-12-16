@@ -1,0 +1,6 @@
+<launch>
+   <node pkg="costmap" type="plot.py" name="plot_node" output="screen" >
+	</node>
+   <node pkg="costmap" type="costmap_saved_final.py" name="cost_map_node" output="screen" >
+	</node>
+ </launch>

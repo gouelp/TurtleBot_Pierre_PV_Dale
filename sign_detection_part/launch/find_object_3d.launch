@@ -1,0 +1,45 @@
+<launch>
+	<!-- Example finding 3D poses of the objects detected -->
+	<!-- $roslaunch openni_launch openni.launch depth_registration:=true -->
+<node name="republish" type="republish" pkg="image_transport" output="screen" args="compressed in:=/camera/rgb/image_raw out:=/image_topic_compressed"/>
+
+	<arg name="object_prefix" default="object"/>
+	<arg name="objects_path"  default=""/>
+	<arg name="gui"           default="true"/>
+	<arg name="approx_sync"   default="true"/>
+	<arg name="pnp"           default="true"/>
+	<arg name="tf_example"    default="true"/>
+	<arg name="settings_path" default="~/.ros/find_object_2d.ini"/>
+ <!-- real robot camer/rgb/image_rect_color and camera/depth_registered/image_raw -->
+ <!-- real robot camer/rgb/image_raw and camera/depth/image_raw -->
+	<!--<arg name="rgb_topic"         default="camera/rgb/image_raw"/>-->
+	<arg name="rgb_topic"         default="image_topic_compressed"/>
+	<!--<arg name="depth_topic"       default="camera/depth/image_raw"/>-->
+  <arg name="depth_topic"       default="camera/depth/image_raw"/>
+	<arg name="camera_info_topic" default="camera/rgb/camera_info"/>
+
+	<node name="find_object_3d" pkg="find_object_2d" type="find_object_2d" output="screen">
+		<param name="gui" value="$(arg gui)" type="bool"/>
+		<param name="settings_path" value="$(arg settings_path)" type="str"/>
+		<param name="session_path" value="/home/pierre/catkin_ws/src/sign_detection_part/session/session_objects.bin" type="str"/>
+		<param name="subscribe_depth" value="true" type="bool"/>
+		<param name="objects_path" value="$(arg objects_path)" type="str"/>
+		<param name="object_prefix" value="$(arg object_prefix)" type="str"/>
+		<param name="approx_sync" value="$(arg approx_sync)" type="bool"/>
+		<param name="pnp" value="$(arg pnp)" type="bool"/>
+
+		<remap from="rgb/image_rect_color" to="$(arg rgb_topic)"/>
+		<remap from="depth_registered/image_raw" to="$(arg depth_topic)"/>
+		<remap from="depth_registered/camera_info" to="$(arg camera_info_topic)"/>
+	</node>
+
+	<!-- Example of tf synchronisation with the objectsStamped message -->
+	<node if="$(arg tf_example)" name="tf_example" pkg="find_object_2d" type="tf_example" output="screen">
+		<param name="object_prefix" value="$(arg object_prefix)" type="str"/>
+	</node>
+
+	<node pkg="sign_detection_part" type="sign_recognition.py" name="sign_detection" />
+		<include file="/home/pierre/catkin_ws/src/sign_detection_part/launch/sign_detection.launch" />
+
+
+</launch>
